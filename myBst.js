@@ -43,19 +43,33 @@ const  insert = (root, value) => {
 
 }
 
-
+function getSuccessor(curr) {
+    curr = curr.right;
+    while (curr !== null && curr.left !== null) {
+        curr = curr.left;
+    }
+    return curr;
+}
 const  deleteItem = (root, value) => {
-    if (root === null)  return
-    if (root.data === value) {
-        console.log("encontre la wea " )
-       return root.data = null
-        
-    }else if (value < root.data){
-        console.log("la wea esta a la izquierda " )
+    if (root === null)  return root
+    if (value < root.data){
+       
         root.left = deleteItem(root.left, value )
     }else if (value > root.data){
-        console.log("la wea esta a la derecha " )
+       
         root.right = deleteItem(root.right, value )
+    } else {
+        if (root.left === null) 
+            //console.log(root.right)
+            return root.right;
+
+        // When root has only left child
+        if (root.right === null) 
+            return root.left;
+
+        let succ = getSuccessor(root);
+        root.data = succ.data;
+        root.right = deleteItem(root.right, succ.data);
     }
     return root
 }
